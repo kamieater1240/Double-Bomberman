@@ -5,12 +5,14 @@ HANDLE hWindow = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int main() {
 
+	readMap();
+	readMapTile();
+	SetConsoleTitle("DoubleBombs!");
+
 	bool endGame = false;
-	while (!endGame) {
+	/*while (!endGame) {
 
-		SetConsoleTitle("DoubleBombs!");
-
-	}
+	}*/
 
 	rewind(stdin);
 	getchar();
