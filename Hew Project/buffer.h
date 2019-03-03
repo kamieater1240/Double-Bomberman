@@ -5,7 +5,7 @@
 #define PIXELFULL		0x0020
 
 void bufferInitialize(void);
-void writePixelToBuffer();
+void writePixelToBuffer(int x, int y, int color, int CHAR);
 void writeMapToBuffer(int xPos, int yPos, char Map[]);
 void OutputBuffer();
 

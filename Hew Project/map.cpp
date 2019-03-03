@@ -14,7 +14,7 @@ void readMap(void) {
 	FILE *fReadMap;
 	char mapRawFileRead[MAPHEIGHT / 8][MAPWIDTH / 8][DECODELAYER + 1];
 
-	fReadMap = fopen("map.txt", "r");
+	fReadMap = fopen("mapNew.txt", "r");
 
 	if (fread == NULL)
 		printf("Map file does not Exists.");
@@ -45,13 +45,11 @@ void mapDecoder() {
 	static int incrementFrame = 0;
 	incrementFrame %= 8;
 
-	char readMapFirstChar = '0';
-	char readMapSecondChar = '0';
-	int decodedMapFirstCharacter;
-	int decodedMapSecondCharacter;
-
 	for (int h = 0; h < DECODELAYER; h++) {
 		for (int i = 0; i < MAPHEIGHT / TILEYSIZE; i++) {
+
+			char readMapFirstChar = '0';
+			char readMapSecondChar = '0';
 			for (int j = 0; j < MAPWIDTH / TILEXSIZE; j++) {
 
 				if (h == 0) {							//アクションタイプ
@@ -81,8 +79,8 @@ void mapDecoder() {
 					readMapFirstChar = mapFileRead[h][i][j];
 					readMapSecondChar = mapFileRead[h + 1][i][j];
 
-					decodedMapFirstCharacter = decodeMapCharacters(readMapFirstChar);
-					decodedMapSecondCharacter = decodeMapCharacters(readMapSecondChar);
+					int decodedMapFirstCharacter = decodeMapCharacters(readMapFirstChar);
+					int decodedMapSecondCharacter = decodeMapCharacters(readMapSecondChar);
 
 					int tileNumber = (decodedMapFirstCharacter * 16) + decodedMapSecondCharacter;
 
@@ -123,7 +121,7 @@ void mapDecoder() {
 								if (pixelShift >= 10)
 									currentChar += 7;
 
-								mapFull[(((0 * MAPHEIGHT * MAPWIDTH) + (((i * TILEYSIZE) + k) * MAPWIDTH) + ((j * TILEXSIZE) + l)) * MAPLAYER) + 2] = currentChar;
+								//mapFull[(((0 * MAPHEIGHT * MAPWIDTH) + (((i * TILEYSIZE) + k) * MAPWIDTH) + ((j * TILEXSIZE) + l)) * MAPLAYER) + 2] = currentChar;
 							}
 						}
 					}
@@ -134,8 +132,8 @@ void mapDecoder() {
 					readMapFirstChar = mapFileRead[h][i][j];
 					readMapSecondChar = mapFileRead[h + 1][i][j];
 
-					decodedMapFirstCharacter = decodeMapCharacters(readMapFirstChar);
-					decodedMapSecondCharacter = decodeMapCharacters(readMapSecondChar);
+					int decodedMapFirstCharacter = decodeMapCharacters(readMapFirstChar);
+					int decodedMapSecondCharacter = decodeMapCharacters(readMapSecondChar);
 
 					int tileNumber = (decodedMapFirstCharacter * 16) + decodedMapSecondCharacter;
 
@@ -173,7 +171,7 @@ void mapDecoder() {
 								if (pixelShift >= 10)
 									currentChar += 7;
 
-								mapFull[(((0 * MAPHEIGHT * MAPWIDTH) + (((i * TILEYSIZE) + k) * MAPWIDTH) + ((j * TILEXSIZE) + l)) * MAPLAYER) + 3] = currentChar;
+								//mapFull[(((0 * MAPHEIGHT * MAPWIDTH) + (((i * TILEYSIZE) + k) * MAPWIDTH) + ((j * TILEXSIZE) + l)) * MAPLAYER) + 3] = currentChar;
 							}
 						}
 					}
@@ -222,9 +220,10 @@ int decodeMapCharacters(char encodedCharacter) {
 	}
 }
 
+//マップを出力する
 void drawMap() {
 	mapDecoder();
-	writeMapToBuffer(0, 32, mapFull);
+	writeMapToBuffer(0, 0, mapFull);
 	OutputBuffer();
 
 	Sleep(80);

@@ -4,12 +4,13 @@
 HANDLE hWindow = GetStdHandle(STD_OUTPUT_HANDLE);
 
 void Initiation() {
-	bufferInitialize();
-	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+	SetConsoleTitle("DoubleBombs!");
+	//SetConsoleDisplayMode(hWindow, CONSOLE_FULLSCREEN_MODE, 0);
 	cursorSetInvisible();
 	readMap();
 	readMapTile();
-	SetConsoleTitle("DoubleBombs!");
+	readObjectTile();
+	bufferInitialize();
 }
 
 int main() {
@@ -21,7 +22,6 @@ int main() {
 
 	}*/
 	drawMap();
-	printf("");
 
 	rewind(stdin);
 	getchar();

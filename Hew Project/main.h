@@ -3,10 +3,13 @@
 #define INDEXSIZE		256
 #define DECODELAYER		8
 #define MAPLAYER		4
-#define MAPWIDTH		128
-#define MAPHEIGHT		64
-#define SCREENWIDTH		128
-#define SCREENHEIGHT	64
+
+#define MAPWIDTH		136
+#define MAPHEIGHT		88
+
+#define SCREENWIDTH		136
+#define SCREENHEIGHT	88
+
 #define PIXELSIZE		12
 #define TILEXSIZE		8
 #define TILEYSIZE		8
@@ -21,5 +24,6 @@
 #include "tile.h"
 #include "setting.h"
 #include "color.h"
+#include "player.h"
 
 void Initiation();
