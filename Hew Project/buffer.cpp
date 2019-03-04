@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define CONIOEX
 #include "buffer.h"
 
 CHAR_INFO m_bufScreen[SCREENWIDTH * SCREENHEIGHT];

@@ -19,11 +19,16 @@
 #include <mmsystem.h>
 #include <string>
 
+#include "conioex.h"
 #include "map.h"
 #include "buffer.h"
 #include "tile.h"
 #include "setting.h"
 #include "color.h"
 #include "player.h"
+
+#ifdef _DEBUG
+void DispDebug(void);
+#endif // _DEBUG
 
 void Initiation();

@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="buffer.h" />
     <ClInclude Include="color.h" />
+    <ClInclude Include="conioex.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />

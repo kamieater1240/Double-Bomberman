@@ -1,13 +1,14 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define CONIOEX
 #include "player.h"
 
 PLAYER player1, player2;
 
 //プレイヤーを初期化する
-void InitPlayer(PLAYER player, COORD pos) {
-	player.posX = pos.X;
-	player.posY = pos.Y;
-	player.isAlive = true;
+void InitPlayer(PLAYER* player, COORD pos) {
+	player->posX = pos.X;
+	player->posY = pos.Y;
+	player->isAlive = true;
 }
 
 //プレーヤー1ステータスをアップデートする

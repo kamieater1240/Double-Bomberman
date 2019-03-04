@@ -8,7 +8,7 @@ typedef struct {
 
 }PLAYER;
 
-void InitPlayer(PLAYER player, COORD pos);
+void InitPlayer(PLAYER* player, COORD pos);
 void UpdatePlayer1(PLAYER player1);
 void UpdatePlayer2(PLAYER player2);
 PLAYER* getPlayer1();

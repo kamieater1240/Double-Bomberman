@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define CONIOEX
 #include "map.h"
 
 char mapFull[(MAPLAYER * MAPHEIGHT * MAPWIDTH) + 1];

@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define CONIOEX
 #include "tile.h"
 
 char mapTile[INDEXSIZE * TILEYSIZE * TILEXSIZE + 1];
