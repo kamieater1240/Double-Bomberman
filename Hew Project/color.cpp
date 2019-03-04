@@ -39,7 +39,7 @@ int colorDecoder(char color) {
 		case('F'):
 			return 17 * WHITE;
 		case('G'):
-			return TRANSPARENT;
+			return TRANSPARENTFLAG;
 	}
 
 }

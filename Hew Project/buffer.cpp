@@ -71,19 +71,49 @@ void writePixelToBuffer(int x, int y, int color, int CHAR) {
 	(m_bufScreen + (y * SCREENWIDTH) + x)->Char.AsciiChar = CHAR;
 }
 
+//マップをバッファに入れる
 void writeMapToBuffer(int xPos, int yPos, char Map[]) {
 
 	for (int i = yPos; i < SCREENHEIGHT + yPos; i++) {
 		for (int j = xPos; j < SCREENWIDTH + xPos; j++) {
 			for (int k = 1; k < MAPLAYER; k++) {
 
-				if (colorDecoder(Map[(((i * MAPWIDTH) + j) * MAPLAYER) + k]) != TRANSPARENT) {
+				if (colorDecoder(Map[(((i * MAPWIDTH) + j) * MAPLAYER) + k]) != TRANSPARENTFLAG) {
 					writePixelToBuffer(j - xPos, i - yPos, colorDecoder(Map[(((i * MAPWIDTH) + j) * MAPLAYER) + k]), PIXELFULL);
 				}
 			}
 		}
 	}
 }
+
+//プレイヤーをバッファに入れる
+void writePlayerToBuffer(int tileIndex, int posX, int posY, char objectTile[]) {
+
+	for (int i = 0; i < TILEYSIZE; i++) {
+		for (int j = 0; j < TILEXSIZE; j++) {
+			if (colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]) != TRANSPARENTFLAG) {
+				writePixelToBuffer(posX + j, posY + i, colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]), PIXELFULL);
+			}
+		}
+	}
+}
+
+//爆弾をバッファに入れる
+void writeBombToBuffer(int tileIndex, int posX, int posY, char objectTile[]) {
+
+	for (int i = 0; i < TILEYSIZE; i++) {
+		for (int j = 0; j < TILEXSIZE; j++) {
+			if (colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]) != TRANSPARENTFLAG) {
+				writePixelToBuffer(posX + j, posY + i, colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]), PIXELFULL);
+			}
+		}
+	}
+}
+
+//爆弾の火をバッファに入れる
+//void writeFireToBuffer(int tileIndex, int posX, int posY, char objectTile[], BOMB explodedBomb) {
+//
+//}
 
 void OutputBuffer() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

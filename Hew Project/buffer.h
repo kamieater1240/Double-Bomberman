@@ -1,19 +1,12 @@
 #pragma once
-
 #include "main.h"
 
 #define PIXELFULL		0x0020
 
 void bufferInitialize(void);
 void writePixelToBuffer(int x, int y, int color, int CHAR);
-void writeMapToBuffer(int xPos, int yPos, char Map[]);
+void writeMapToBuffer(int posX, int posY, char Map[]);
+void writePlayerToBuffer(int tileIndex, int posX, int posY, char objectTile[]);
+void writeBombToBuffer(int tileIndex, int posX, int posY, char objectTile[]);
+//void writeFireToBuffer(int tileIndex, int posX, int posY, char objectTile[], BOMB explodedBomb);
 void OutputBuffer();
-
-//void setColor(int);
-//void setColor(int, int);
-//void setCursorPos(int, int);
-//void write(const char *);
-//void write(const wchar_t *);
-//void write(const std::string &);
-//void write(const std::wstring &);
-//void swap();

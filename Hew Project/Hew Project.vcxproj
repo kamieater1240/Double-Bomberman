@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bomb.cpp" />
     <ClCompile Include="buffer.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="main.cpp" />
@@ -128,6 +129,7 @@
     <Text Include="objectTiles.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bomb.h" />
     <ClInclude Include="buffer.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="conioex.h" />

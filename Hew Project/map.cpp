@@ -221,11 +221,15 @@ int decodeMapCharacters(char encodedCharacter) {
 	}
 }
 
-//マップを出力する
-void drawMap() {
+//マップをバッファする
+void bufferMap() {
+
 	mapDecoder();
 	writeMapToBuffer(0, 0, mapFull);
-	OutputBuffer();
+}
 
-	Sleep(80);
+
+char getcharMapFileRead(int layer, int playerX, int playerY) {
+
+	return mapFileRead[layer][playerY][playerX];
 }

@@ -37,13 +37,13 @@ int main() {
 		{
 			dwExecLastTime = dwCurrentTime;
 
-			//Update();
+			Update();
 
-			drawMap();
+			Draw();
 
-			#ifdef _DEBUG
-			DispDebug();
-			#endif // DEBUG
+			//#ifdef _DEBUG
+			//DispDebug();
+			//#endif // DEBUG
 
 			nCountFrame++;
 		}
@@ -62,25 +62,10 @@ int main() {
 void DispDebug(void) {
 	gotoxy(1, 1);
 	printf("FPS:%d", g_nCountFPS);
-
-	/*STATUS *pPlayer = getPlayer();
-	gotoxy(78, 1);
-	printf("posX : %.2lf", pPlayer->posX);
-	gotoxy(78, 2);
-	printf("posY : %.2lf", pPlayer->posY);
-	gotoxy(78, 3);
-	printf("moveX : %.2lf", pPlayer->moveX);
-	gotoxy(78, 4);
-	printf("moveY : %.2lf", pPlayer->moveY);
-	gotoxy(78, 5);
-	printf("動:%d", pPlayer->isMove);
-	gotoxy(78, 6);
-	printf("Jump:%d", pPlayer->isJump);
-	gotoxy(78, 7);
-	printf("isShot:%d", pPlayer->isShot);*/
 }
 #endif
 
+//色々ものを初期化する
 void Initiation() {
 	SetConsoleTitle("DoubleBombs!");
 	//SetConsoleDisplayMode(hWindow, CONSOLE_FULLSCREEN_MODE, 0);
@@ -91,5 +76,24 @@ void Initiation() {
 	readObjectTile();
 	bufferInitialize();
 
-	InitPlayer(getPlayer1(), {});
+	InitPlayer(getPlayer1(), { 8, 8 });
+	InitPlayer(getPlayer2(), { 120, 72 });
+}
+
+//各ステータスをアップデートする
+void Update() {
+	UpdatePlayer1(getPlayer1());
+	UpdatePlayer2(getPlayer2());
+	UpdateBomb();
+}
+
+//画面を描く
+void Draw() {
+
+	bufferMap();
+	bufferBombs();
+	bufferPlayers();
+	OutputBuffer();
+
+	Sleep(40);
 }
