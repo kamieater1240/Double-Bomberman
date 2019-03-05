@@ -110,11 +110,6 @@ void writeBombToBuffer(int tileIndex, int posX, int posY, char objectTile[]) {
 	}
 }
 
-//爆弾の火をバッファに入れる
-//void writeFireToBuffer(int tileIndex, int posX, int posY, char objectTile[], BOMB explodedBomb) {
-//
-//}
-
 void OutputBuffer() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	WriteConsoleOutput(hConsole, m_bufScreen, fullScreen, { 0,0 }, &m_rectWindow);

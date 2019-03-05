@@ -32,6 +32,7 @@
 #include "setting.h"
 #include "color.h"
 #include "item.h"
+#include "startandend.h"
 
 #ifdef _DEBUG
 void DispDebug(void);

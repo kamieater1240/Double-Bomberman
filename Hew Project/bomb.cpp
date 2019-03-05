@@ -61,6 +61,7 @@ void UpdateBomb() {
 				}
 				else if (bombs[i].hasFire && bombs[i].fireTimeCnt < 15) {
 					bombs[i].fireTimeCnt++;
+					explode(bombs[i]);	//draw one more time, else if two bombs are too close, when clearing the fire of the first bomb, second's fire will be cleared too
 				}
 			}
 		}
@@ -132,7 +133,7 @@ void firesToMap(BOMB bomb) {
 					
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 50) {
+					if (createItem < 40) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX, bomb.posY - 8 * i, ITEMTYPETYPE_DBBOMB);
@@ -165,7 +166,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 50) {
+					if (createItem < 40) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX, bomb.posY + 8 * i, ITEMTYPETYPE_DBBOMB);
@@ -198,7 +199,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 50) {
+					if (createItem < 40) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX + 8 * i, bomb.posY, ITEMTYPETYPE_DBBOMB);
@@ -231,7 +232,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 50) {
+					if (createItem < 40) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX - 8 * i, bomb.posY, ITEMTYPETYPE_DBBOMB);

@@ -63,10 +63,18 @@ void clearItem(int posX, int posY) {
 		if (items[i].isUsed) {
 			if (items[i].posX == posX && items[i].posY == posY) {
 
+				for (int j = 0; j < DECODELAYER; j++) {
+					if (j == 1)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((posY / 8)*(MAPWIDTH / 8)) + (posX / 8)) = '2';
+					else
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((posY / 8)*(MAPWIDTH / 8)) + (posX / 8)) = '0';
+				}
 
+				items[i].isUsed = false;
 				break;
 			}
 		}
 	}
 
+	writeMapFileRead(mapReceiveFile);
 }
