@@ -2,8 +2,10 @@
 
 #include "main.h"
 
-const char * getMapFull(void);
-void readMap(void);
+const char * getMapFull();
+char * getMapFileRead();
+void writeMapFileRead(char* mapSerialFile);
+void readMap();
 void mapDecoder();
 int decodeMapCharacters(char encodedCharacter);
 void bufferMap();

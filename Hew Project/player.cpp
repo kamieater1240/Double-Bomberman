@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define CONIOEX
 #include "player.h"
+#include "bomb.h"
 
 PLAYER player1, player2;
 
@@ -12,6 +13,7 @@ void InitPlayer(PLAYER* player, COORD pos) {
 	player->canPlantBombNum = 1;
 	player->bombPlantedNum = 0;
 	player->bombPower = 1;
+	player->settingBomb = false;
 }
 
 //プレーヤー1ステータスをアップデートする
@@ -22,6 +24,15 @@ void UpdatePlayer1(PLAYER* player1) {
 			player1->posY -= 8;
 			if (player1->posY < 0)
 				player1->posY = 0;
+			
+			if (getcharMapFileRead(0, (player1->posX) / 8, (player1->posY - 8) / 8) == '5') {
+				if (getcharMapFileRead(6, (player1->posX) / 8, (player1->posY - 8) / 8) == '7') {
+					player1->canPlantBombNum *= 2;
+				}
+				else if (getcharMapFileRead(6, (player1->posX) / 8, (player1->posY - 8) / 8) == '8') {
+					player1->bombPower *= 2;
+				}
+			}
 		}
 	}
 	if (inport(PK_S)) {
@@ -29,6 +40,15 @@ void UpdatePlayer1(PLAYER* player1) {
 			player1->posY += 8;
 			if (player1->posY > 80)
 				player1->posY = 80;
+
+			if (getcharMapFileRead(0, (player1->posX) / 8, (player1->posY + 8) / 8) == '5') {
+				if (getcharMapFileRead(6, (player1->posX) / 8, (player1->posY + 8) / 8) == '7') {
+					player1->canPlantBombNum *= 2;
+				}
+				else if (getcharMapFileRead(6, (player1->posX) / 8, (player1->posY + 8) / 8) == '8') {
+					player1->bombPower *= 2;
+				}
+			}
 		}
 	}
 	if (inport(PK_A)) {
@@ -36,6 +56,15 @@ void UpdatePlayer1(PLAYER* player1) {
 			player1->posX -= 8;
 			if (player1->posX < 0)
 				player1->posX = 0;
+
+			if (getcharMapFileRead(0, (player1->posX - 8) / 8, (player1->posY) / 8) == '5') {
+				if (getcharMapFileRead(6, (player1->posX - 8) / 8, (player1->posY) / 8) == '7') {
+					player1->canPlantBombNum *= 2;
+				}
+				else if (getcharMapFileRead(6, (player1->posX - 8) / 8, (player1->posY) / 8) == '8') {
+					player1->bombPower *= 2;
+				}
+			}
 		}
 	}
 	if (inport(PK_D)) {
@@ -43,10 +72,34 @@ void UpdatePlayer1(PLAYER* player1) {
 			player1->posX += 8;
 			if (player1->posX > 128)
 				player1->posX = 128;
+
+			if (getcharMapFileRead(0, (player1->posX + 8) / 8, (player1->posY) / 8) == '5') {
+				if (getcharMapFileRead(6, (player1->posX + 8) / 8, (player1->posY) / 8) == '7') {
+					player1->canPlantBombNum *= 2;
+				}
+				else if (getcharMapFileRead(6, (player1->posX + 8) / 8, (player1->posY) / 8) == '8') {
+					player1->bombPower *= 2;
+				}
+			}
 		}
 	}
 
+	//爆弾を置く
+	if (GetAsyncKeyState(VK_TAB) & 0x8000) {
+		if (!player1->settingBomb) {
+			if (player1->bombPlantedNum < player1->canPlantBombNum) {
+				player1->bombPlantedNum++;
+				setBomb(player1->posX, player1->posY, player1->bombPower, player1);
+				bombsToMap();
+			}
+			player1->settingBomb = true;
+		}
+	}
+	else {
+		player1->settingBomb = false;
+	}
 
+	player1->isAlive = !isGameOver(player1);
 }
 
 //プレーヤー2ステータスをアップデートする
@@ -83,12 +136,21 @@ void UpdatePlayer2(PLAYER* player2) {
 	}
 
 	//爆弾を置く
-	if (inport(PK_GT)) {
-		if (player2->bombPlantedNum < player2->canPlantBombNum) {
-			player2->bombPlantedNum++;
-			setBomb(player2->posX, player2->posY, player2->bombPower, player2);
+	if (GetAsyncKeyState(VK_OEM_PERIOD) & 0x8000) {
+		if (!player2->settingBomb) {
+			if (player2->bombPlantedNum < player2->canPlantBombNum) {
+				player2->bombPlantedNum++;
+				setBomb(player2->posX, player2->posY, player2->bombPower, player2);
+				bombsToMap();
+			}
+			player2->settingBomb = true;
 		}
 	}
+	else {
+		player2->settingBomb = false;
+	}
+
+	player2->isAlive = !isGameOver(player2);
 }
 
 //プレイヤーをバッファする
@@ -110,4 +172,13 @@ PLAYER* getPlayer1() {
 //プレーヤー2を取得する
 PLAYER* getPlayer2() {
 	return &player2;
+}
+
+//プレイヤーは爆発に巻き込まれた
+bool isGameOver(PLAYER* player) {
+	if (getcharMapFileRead(0, (player->posX) / 8, (player->posY) / 8) == '4') {
+		return true;
+	}
+	else
+		return false;
 }

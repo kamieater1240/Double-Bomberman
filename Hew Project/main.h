@@ -15,9 +15,12 @@
 #define TILEXSIZE		8
 #define TILEYSIZE		8
 
-#define MAXBOMB			50
+#define MAX_BOMB		50
+#define MAX_ITEM		100
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <windows.h>
 #include <mmsystem.h>
 #include <string>
@@ -28,8 +31,7 @@
 #include "tile.h"
 #include "setting.h"
 #include "color.h"
-#include "bomb.h"
-#include "player.h"
+#include "item.h"
 
 #ifdef _DEBUG
 void DispDebug(void);

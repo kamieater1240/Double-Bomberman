@@ -9,6 +9,7 @@ typedef struct {
 	bool isAlive;
 	int canPlantBombNum, bombPlantedNum;
 	int bombPower;
+	bool settingBomb;
 
 }PLAYER;
 
@@ -18,5 +19,6 @@ void UpdatePlayer2(PLAYER* player2);
 void bufferPlayers();
 PLAYER* getPlayer1();
 PLAYER* getPlayer2();
+bool isGameOver(PLAYER* player);
 
 #endif // !_PLAYER_H_

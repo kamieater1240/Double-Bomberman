@@ -1,14 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "main.h"
+#include "player.h"
+#include "bomb.h"
 
 HANDLE hWindow = GetStdHandle(STD_OUTPUT_HANDLE);
 int g_nCountFPS;				// FPSカウンタ
 
 int main() {
 
-
-	bool endGame = false;
-	//drawMap();
+	PLAYER* player1 = getPlayer1();
+	PLAYER* player2 = getPlayer2();
 
 	DWORD dwExecLastTime;
 	DWORD dwFPSLastTime;
@@ -47,11 +48,16 @@ int main() {
 
 			nCountFrame++;
 		}
-	} while (!inport(PK_ESC));
+	} while (player1->isAlive && player2->isAlive);
 
 	// 分解能を戻す
 	timeEndPeriod(1);
 
+	system("cls");
+	if (!player1->isAlive)
+		printf("GameOver!!! Player2 Won!!!");
+	else
+		printf("GameOver!!! Player1 Won!!!");
 	rewind(stdin);
 	getchar();
 	return 0;
@@ -91,7 +97,6 @@ void Update() {
 void Draw() {
 
 	bufferMap();
-	bufferBombs();
 	bufferPlayers();
 	OutputBuffer();
 

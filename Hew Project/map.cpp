@@ -6,12 +6,39 @@ char mapFull[(MAPLAYER * MAPHEIGHT * MAPWIDTH) + 1];
 char mapFileRead[DECODELAYER][MAPHEIGHT / 8][(MAPWIDTH / 8) + 1];
 
 //mapFullを戻る
-const char * getMapFull(void) {
+const char * getMapFull() {
 	return mapFull;
 }
 
+//mapFileReadを戻る
+char* getMapFileRead(void) {
+	static char mapSerialFile[(DECODELAYER * (MAPHEIGHT / 8) * (MAPWIDTH / 8)) + 1];
+
+	for (int i = 0; i < DECODELAYER; i++) {
+		for (int j = 0; j < MAPHEIGHT / 8; j++) {
+			for (int k = 0; k < MAPWIDTH / 8; k++) {
+				mapSerialFile[(i*(MAPHEIGHT / 8)*(MAPWIDTH / 8) + j * (MAPWIDTH / 8) + k)] = mapFileRead[i][j][k];
+			}
+		}
+	}
+	mapSerialFile[(DECODELAYER * (MAPHEIGHT / 8) * (MAPWIDTH / 8))] = '\0';
+
+	return mapSerialFile;
+}
+
+//mapSerialFileのデータをmapFileReadに書く
+void writeMapFileRead(char* mapSerialFile) {
+	for (int i = 0; i < DECODELAYER; i++) {
+		for (int j = 0; j < MAPHEIGHT / 8; j++) {
+			for (int k = 0; k < MAPWIDTH / 8; k++) {
+				mapFileRead[i][j][k] = *(mapSerialFile + (i*(MAPHEIGHT / 8)*(MAPWIDTH / 8) + j * (MAPWIDTH / 8) + k));
+			}
+		}
+	}
+}
+
 //ファイルからマップデータを読み込む
-void readMap(void) {
+void readMap() {
 	FILE *fReadMap;
 	char mapRawFileRead[MAPHEIGHT / 8][MAPWIDTH / 8][DECODELAYER + 1];
 
