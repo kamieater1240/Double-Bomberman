@@ -118,11 +118,13 @@
     <ClCompile Include="bomb.cpp" />
     <ClCompile Include="buffer.cpp" />
     <ClCompile Include="color.cpp" />
+    <ClCompile Include="image.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="setting.cpp" />
+    <ClCompile Include="startandend.cpp" />
     <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,11 +136,13 @@
     <ClInclude Include="buffer.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="conioex.h" />
+    <ClInclude Include="image.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="setting.h" />
+    <ClInclude Include="startandend.h" />
     <ClInclude Include="tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

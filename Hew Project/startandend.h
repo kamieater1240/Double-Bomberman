@@ -2,4 +2,4 @@
 #include "main.h"
 
 void standbyScreen();
-void gameOverScreen();
+void gameOverScreen(int winner);

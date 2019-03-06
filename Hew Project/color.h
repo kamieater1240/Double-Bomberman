@@ -7,8 +7,8 @@
 #define DARK_RED		4
 #define DARK_VIOLET		5
 #define DARK_YELLOW		6
-#define GRAY			7
-#define LIGHT_GRAY		8
+#define LIGHT_GRAY		7
+#define DARK_GRAY		8
 #define BLUE			9
 #define GREEN			10
 #define CYAN			11

@@ -79,7 +79,7 @@ void writeMapToBuffer(int xPos, int yPos, char Map[]) {
 			for (int k = 1; k < MAPLAYER; k++) {
 
 				if (colorDecoder(Map[(((i * MAPWIDTH) + j) * MAPLAYER) + k]) != TRANSPARENTFLAG) {
-					writePixelToBuffer(j - xPos, i - yPos, colorDecoder(Map[(((i * MAPWIDTH) + j) * MAPLAYER) + k]), PIXELFULL);
+					writePixelToBuffer(j - xPos, i - yPos, colorDecoder(Map[(((i * MAPWIDTH) + j) * MAPLAYER) + k]), SPACE);
 				}
 			}
 		}
@@ -92,7 +92,7 @@ void writePlayerToBuffer(int tileIndex, int posX, int posY, char objectTile[]) {
 	for (int i = 0; i < TILEYSIZE; i++) {
 		for (int j = 0; j < TILEXSIZE; j++) {
 			if (colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]) != TRANSPARENTFLAG) {
-				writePixelToBuffer(posX + j, posY + i, colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]), PIXELFULL);
+				writePixelToBuffer(posX + j, posY + i, colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]), SPACE);
 			}
 		}
 	}
@@ -104,12 +104,21 @@ void writeBombToBuffer(int tileIndex, int posX, int posY, char objectTile[]) {
 	for (int i = 0; i < TILEYSIZE; i++) {
 		for (int j = 0; j < TILEXSIZE; j++) {
 			if (colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]) != TRANSPARENTFLAG) {
-				writePixelToBuffer(posX + j, posY + i, colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]), PIXELFULL);
+				writePixelToBuffer(posX + j, posY + i, colorDecoder(objectTile[tileIndex*TILEXSIZE*TILEYSIZE + i * TILEXSIZE + j]), SPACE);
 			}
 		}
 	}
 }
 
+//titleTextをバッファに入れる
+void writeTitleBarToBuffer(int posX, int posY, char titleText[]) {
+
+	for (int i = 0; i < strlen(titleText); i++) {
+		writePixelToBuffer(posX + i, posY, colorDecoder(titleText[i]), SPACE);
+	}
+}
+
+//バッファを出力する
 void OutputBuffer() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	WriteConsoleOutput(hConsole, m_bufScreen, fullScreen, { 0,0 }, &m_rectWindow);

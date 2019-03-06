@@ -1,6 +1,24 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <windows.h>
+#include <mmsystem.h>
+#include <fstream>
+#include <string>
+
+#include "conioex.h"
+#include "map.h"
+#include "buffer.h"
+#include "tile.h"
+#include "setting.h"
+#include "color.h"
+#include "item.h"
+#include "startandend.h"
+using namespace std;
+
 #define INDEXSIZE		256
 #define DECODELAYER		8
 #define MAPLAYER		4
@@ -18,21 +36,14 @@
 #define MAX_BOMB		50
 #define MAX_ITEM		100
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <windows.h>
-#include <mmsystem.h>
-#include <string>
+#define GAME_X    8
+#define GAME_Y    1
 
-#include "conioex.h"
-#include "map.h"
-#include "buffer.h"
-#include "tile.h"
-#include "setting.h"
-#include "color.h"
-#include "item.h"
-#include "startandend.h"
+enum State {
+	TITLE,
+	GAME,
+	RESULT
+};
 
 #ifdef _DEBUG
 void DispDebug(void);

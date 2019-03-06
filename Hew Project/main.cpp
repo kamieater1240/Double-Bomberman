@@ -23,6 +23,7 @@ int main() {
 	dwCurrentTime = nCountFrame = 0;
 
 	Initiation();
+	standbyScreen();
 
 	do
 	{
@@ -54,10 +55,11 @@ int main() {
 	timeEndPeriod(1);
 
 	system("cls");
-	if (!player1->isAlive)
-		printf("GameOver!!! Player2 Won!!!");
-	else
-		printf("GameOver!!! Player1 Won!!!");
+	if (player1->isAlive)
+		gameOverScreen(1);
+	else if (player2->isAlive)
+		gameOverScreen(2);
+
 	rewind(stdin);
 	getchar();
 	return 0;
@@ -84,6 +86,9 @@ void Initiation() {
 
 	InitPlayer(getPlayer1(), { 8, 8 });
 	InitPlayer(getPlayer2(), { 120, 72 });
+	initBomb();
+	initMapEmpty();
+	initItem();
 }
 
 //各ステータスをアップデートする

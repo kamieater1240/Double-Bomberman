@@ -21,9 +21,9 @@ int colorDecoder(char color) {
 		case('6'): 
 			return 17 * DARK_YELLOW;
 		case('7'): 
-			return 17 * GRAY;
-		case('8'): 
 			return 17 * LIGHT_GRAY;
+		case('8'): 
+			return 17 * DARK_GRAY;
 		case('9'): 
 			return 17 * BLUE;
 		case('A'): 
