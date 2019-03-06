@@ -2,90 +2,116 @@
 #define CONIOEX
 #include "image.h"
 
-void loadImage(const char name[], Image* image) {
-	FILE *file;
+void loadImage(const string & filename, Image& image) {
+	/*FILE *file;
 	char path[_MAX_PATH] = "Resources/";
 	char ext[_MAX_EXT] = ".bmp";
 	BITMAPFILEHEADER bmpFile;
 	BITMAPINFOHEADER bmpInfo;
-	int colorSize;
+	int colorSize, pixelNum;
 	RGBTRIPLE *bmpColor;
 
 	strcat_s(path, name);
 	strcat_s(path, ext);
 	fopen_s(&file, path, "rb");
 	fread((char*)&bmpFile, sizeof(BITMAPFILEHEADER), 1, file);
-	fread((char*)&bmpInfo, sizeof(BITMAPINFOHEADER), 1, file);
+	fread((char*)&bmpInfo, sizeof(BITMAPINFOHEADER), 1, file);*/
+	// file path
+	string path{ "Resources\\" };
+	path = path + filename + ".bmp";
+	//open the bmp file
+	fstream fs(path, ios::binary | ios::in);
+	//if fail return -1
+	if (!fs)
+	{
+		return;
+	}
+	//file header
+	BITMAPFILEHEADER bmpFile;
+	BITMAPINFOHEADER bmpInfo;
+	//read file header
+	fs.read(reinterpret_cast<char*>(&bmpFile), sizeof BITMAPFILEHEADER);
+	//if not bmp file return -1
+	if (bmpFile.bfType != 'MB')
+	{
+		return;
+	}
+	//red bmp info header
+	fs.read(reinterpret_cast<char*>(&bmpInfo), sizeof BITMAPINFOHEADER);
 
-	colorSize = sizeof(RGBTRIPLE) * bmpInfo.biWidth * bmpInfo.biHeight;
-	bmpColor = (RGBTRIPLE*)malloc(colorSize);
-	fread((char*)bmpColor, colorSize, 1, file);
+	int pixelNum = bmpInfo.biWidth * bmpInfo.biHeight;
+	//colorSize = sizeof(RGBTRIPLE) * bmpInfo.biWidth * bmpInfo.biHeight;
+	/*bmpColor = (RGBTRIPLE*)malloc(colorSize);
+	fread((char*)bmpColor, colorSize, 1, file);*/
+	RGBTRIPLE *bmpColor = new RGBTRIPLE[pixelNum];
+	fs.read(reinterpret_cast<char*>(bmpColor), sizeof(RGBTRIPLE) * pixelNum);
+
+	//save bmp size
+	image.size.X = bmpInfo.biHeight;
+	image.size.Y = bmpInfo.biWidth;
+
+	image.color = new CHAR_INFO[pixelNum];
 
 	// âÊëúÇÃêFÇì«Ç›çûÇﬁ
-	for (int row = 0; row < bmpInfo.biHeight; row++) {
-		for (int col = 0; col < bmpInfo.biWidth; col++) {
-			image->color[row * image->size.X + col] = getColor(bmpColor[(bmpInfo.biHeight - 1 - row) * bmpInfo.biWidth + col]);
-		}
+	for (int i = 0; i < pixelNum; i++) {
+		//getColor(bmpColor[i], *(image.color + i));
+		getColor(*(bmpColor + i), *(image.color + i));
 	}
 
-	free(bmpColor);
-	fclose(file);
+	//free(bmpColor);
+	//fclose(file);
 }
 
 void drawImage(Image image) {
 
-	for (int i = 0; i < image.size.Y; i++) {
-		for (int j = 0; j < image.size.X; j++) {
-			writePixelToBuffer(j, i, colorDecoder(image.color[i * image.size.X + j]), SPACE);
+	for (int i = 0; i < image.size.X; i++) {
+		for (int j = 0; j < image.size.Y; j++) {
+			//writePixelToBuffer(j, i, colorDecoder(image.color[i * image.size.X + j].Char.AsciiChar), SPACE);
+			writeCharInfoToBuffer(j, i, *(image.color + (image.size.X - 1 - i) * image.size.Y + j));
 		}
 	}
 
 	OutputBuffer();
 }
 
-WORD getColor(RGBTRIPLE rgb) {
-	// RGBÇWORDÇ…ïœä∑Ç∑ÇÈ
-	if (rgb.rgbtRed == rgb.rgbtGreen && rgb.rgbtGreen == rgb.rgbtBlue) {
-		switch (rgb.rgbtRed) {
-		case 0:
-			return BLACK;
-		case 128:
-			return DARK_GRAY;
-		case 192:
-			return LIGHT_GRAY;
-		case 255:
-			return WHITE;
+void getColor(RGBTRIPLE rgb, CHAR_INFO& charInfo) {
+
+	charInfo.Attributes = 0x00;
+	charInfo.Char.UnicodeChar = ' ';
+
+	if (rgb.rgbtRed == 0x00)
+	{
+		if (rgb.rgbtGreen == rgb.rgbtBlue && rgb.rgbtGreen == 0x00)
+		{
+			return;
+		}
+		else
+		{
+			charInfo.Attributes = 0x0f;
+			charInfo.Char.UnicodeChar = (rgb.rgbtGreen << 8) + rgb.rgbtBlue;
 		}
 	}
-	else if (rgb.rgbtRed == rgb.rgbtGreen) {
-		switch (rgb.rgbtRed) {
-		case 0:
-			return rgb.rgbtBlue == 255 ? BLUE : DARK_BLUE;
-		case 128:
-			return DARK_YELLOW;
-		case 255:
-			return YELLOW;
+	else
+	{
+		int colorSum = rgb.rgbtBlue + rgb.rgbtGreen + rgb.rgbtRed;
+		short tmp = 0x00;
+		if (rgb.rgbtBlue >> 7 == 1)
+		{
+			tmp++;
 		}
-	}
-	else if (rgb.rgbtGreen == rgb.rgbtBlue) {
-		switch (rgb.rgbtGreen) {
-		case 0:
-			return rgb.rgbtRed == 255 ? RED : DARK_RED;
-		case 128:
-			return DARK_CYAN;
-		case 255:
-			return CYAN;
+		if (rgb.rgbtGreen >> 7 == 1)
+		{
+			tmp += 0x2;
 		}
-	}
-	else if (rgb.rgbtBlue == rgb.rgbtRed) {
-		switch (rgb.rgbtBlue) {
-		case 0:
-			return rgb.rgbtGreen == 255 ? GREEN : DARK_GREEN;
-		case 128:
-			return DARK_VIOLET;
-		case 255:
-			return VIOLET;
+		if (rgb.rgbtRed >> 7 == 1)
+		{
+			tmp += 0x4;
 		}
+		if (colorSum > 128 * 3)
+		{
+			tmp += 0x8;
+		}
+		charInfo.Attributes = tmp << 4;;
 	}
-	return BLACK;
+	return;
 }

@@ -71,6 +71,11 @@ void writePixelToBuffer(int x, int y, int color, int CHAR) {
 	(m_bufScreen + (y * SCREENWIDTH) + x)->Char.AsciiChar = CHAR;
 }
 
+//CHAR_INFOをバッファに描く
+void writeCharInfoToBuffer(int x, int y, CHAR_INFO charInfo) {
+	*(m_bufScreen + (y * SCREENWIDTH) + x) = charInfo;
+}
+
 //マップをバッファに入れる
 void writeMapToBuffer(int xPos, int yPos, char Map[]) {
 

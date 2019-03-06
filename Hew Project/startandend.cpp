@@ -7,34 +7,20 @@ void standbyScreen() {
 
 	Image title1, title2;
 
-	loadImage("BomberMan1", &title1);
-	loadImage("BomberMan2", &title2);
+	loadImage("BomberMan1", title1);
+	loadImage("BomberMan2", title2);
 
-	/*ifstream loadtitle;
-	loadtitle.open("gameover.txt");
-	char titleText[31][134];
-	string tmp;
-	int row = 0;
-
-	while (!loadtitle.eof()) {
-		getline(loadtitle, tmp);
-		for (int i = 0; i < tmp.length(); i++) {
-			titleText[row][i] = tmp[i];
-		}
-		titleText[row][tmp.length()] = '\0';
-
-		writeTitleBarToBuffer(2, 2 + row, titleText[row]);
-		row++;
-	}*/
+	/*loadImage("test", title1);
+	loadImage("test", title2);*/
 
 	rewind(stdin);
 
 	while (!kbhit()) {
 		
 		drawImage(title1);
-		Sleep(1000);
+		Sleep(600);
 		drawImage(title2);
-		Sleep(1000);
+		Sleep(600);
 	}
 }
 

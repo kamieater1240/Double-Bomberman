@@ -4,9 +4,9 @@
 struct Image {
 	COORD pos;
 	COORD size;
-	WORD *color;
+	CHAR_INFO *color;
 };
 
-void loadImage(const char name[], Image* image);
+void loadImage(const string & filename, Image& image);
 void drawImage(Image image);
-WORD getColor(RGBTRIPLE rgb);
+void getColor(RGBTRIPLE rgb, CHAR_INFO& charInfo);
