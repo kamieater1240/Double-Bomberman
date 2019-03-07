@@ -21,8 +21,11 @@ void UpdatePlayer1(PLAYER* player1) {
 
 	if (inport(PK_W)) {
 		if (getcharMapFileRead(0, (player1->posX) / 8, (player1->posY - 8) / 8) == '0' || getcharMapFileRead(0, (player1->posX) / 8, (player1->posY - 8) / 8) == '4' || getcharMapFileRead(0, (player1->posX) / 8, (player1->posY - 8) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player1->posX) / 8, (player1->posY - 8) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player1->posX) / 8, (player1->posY - 8) / 8) == '7') {
 					if (player1->canPlantBombNum < 4)
 						player1->canPlantBombNum *= 2;
@@ -42,8 +45,11 @@ void UpdatePlayer1(PLAYER* player1) {
 	}
 	if (inport(PK_S)) {
 		if (getcharMapFileRead(0, (player1->posX) / 8, (player1->posY + 8) / 8) == '0' || getcharMapFileRead(0, (player1->posX) / 8, (player1->posY + 8) / 8) == '4' || getcharMapFileRead(0, (player1->posX) / 8, (player1->posY + 8) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player1->posX) / 8, (player1->posY + 8) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player1->posX) / 8, (player1->posY + 8) / 8) == '7') {
 					if (player1->canPlantBombNum < 4)
 						player1->canPlantBombNum *= 2;
@@ -63,8 +69,11 @@ void UpdatePlayer1(PLAYER* player1) {
 	}
 	if (inport(PK_A)) {
 		if (getcharMapFileRead(0, (player1->posX - 8) / 8, (player1->posY) / 8) == '0' || getcharMapFileRead(0, (player1->posX - 8) / 8, (player1->posY) / 8) == '4' || getcharMapFileRead(0, (player1->posX - 8) / 8, (player1->posY) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player1->posX - 8) / 8, (player1->posY) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player1->posX - 8) / 8, (player1->posY) / 8) == '7') {
 					if (player1->canPlantBombNum < 4)
 						player1->canPlantBombNum *= 2;
@@ -84,8 +93,11 @@ void UpdatePlayer1(PLAYER* player1) {
 	}
 	if (inport(PK_D)) {
 		if (getcharMapFileRead(0, (player1->posX + 8) / 8, (player1->posY) / 8) == '0' || getcharMapFileRead(0, (player1->posX + 8) / 8, (player1->posY) / 8) == '4' || getcharMapFileRead(0, (player1->posX + 8) / 8, (player1->posY) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player1->posX + 8) / 8, (player1->posY) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player1->posX + 8) / 8, (player1->posY) / 8) == '7') {
 					if (player1->canPlantBombNum < 4)
 						player1->canPlantBombNum *= 2;
@@ -108,6 +120,7 @@ void UpdatePlayer1(PLAYER* player1) {
 	if (GetAsyncKeyState(VK_TAB) & 0x8000) {
 		if (!player1->settingBomb) {
 			if (player1->bombPlantedNum < player1->canPlantBombNum) {
+				playAudio(putBombSE, 0);
 				player1->bombPlantedNum++;
 				setBomb(player1->posX, player1->posY, player1->bombPower, player1);
 				bombsToMap();
@@ -131,8 +144,11 @@ void UpdatePlayer2(PLAYER* player2) {
 	//ˆÚ“®
 	if (inport(PK_UP)) {
 		if (getcharMapFileRead(0, (player2->posX) / 8, (player2->posY - 8) / 8) == '0' || getcharMapFileRead(0, (player2->posX) / 8, (player2->posY - 8) / 8) == '4' || getcharMapFileRead(0, (player2->posX) / 8, (player2->posY - 8) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player2->posX) / 8, (player2->posY - 8) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player2->posX) / 8, (player2->posY - 8) / 8) == '7') {
 					if (player2->canPlantBombNum < 4)
 						player2->canPlantBombNum *= 2;
@@ -152,8 +168,11 @@ void UpdatePlayer2(PLAYER* player2) {
 	}
 	if (inport(PK_DOWN)) {
 		if (getcharMapFileRead(0, (player2->posX) / 8, (player2->posY + 8) / 8) == '0' || getcharMapFileRead(0, (player2->posX) / 8, (player2->posY + 8) / 8) == '4' || getcharMapFileRead(0, (player2->posX) / 8, (player2->posY + 8) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player2->posX) / 8, (player2->posY + 8) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player2->posX) / 8, (player2->posY + 8) / 8) == '7') {
 					if (player2->canPlantBombNum < 4)
 						player2->canPlantBombNum *= 2;
@@ -173,8 +192,11 @@ void UpdatePlayer2(PLAYER* player2) {
 	}
 	if (inport(PK_LEFT)) {
 		if (getcharMapFileRead(0, (player2->posX - 8) / 8, (player2->posY) / 8) == '0' || getcharMapFileRead(0, (player2->posX - 8) / 8, (player2->posY) / 8) == '4' || getcharMapFileRead(0, (player2->posX - 8) / 8, (player2->posY) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player2->posX - 8) / 8, (player2->posY) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player2->posX - 8) / 8, (player2->posY) / 8) == '7') {
 					if (player2->canPlantBombNum < 4)
 						player2->canPlantBombNum *= 2;
@@ -194,8 +216,11 @@ void UpdatePlayer2(PLAYER* player2) {
 	}
 	if (inport(PK_RIGHT)) {
 		if (getcharMapFileRead(0, (player2->posX + 8) / 8, (player2->posY) / 8) == '0' || getcharMapFileRead(0, (player2->posX + 8) / 8, (player2->posY) / 8) == '4' || getcharMapFileRead(0, (player2->posX + 8) / 8, (player2->posY) / 8) == '5') {
+			playAudio(footstepSE, 0);
 
 			if (getcharMapFileRead(0, (player2->posX + 8) / 8, (player2->posY) / 8) == '5') {
+				playAudio(takeItemSE, 0);
+
 				if (getcharMapFileRead(6, (player2->posX + 8) / 8, (player2->posY) / 8) == '7') {
 					if (player2->canPlantBombNum < 4)
 						player2->canPlantBombNum *= 2;
@@ -218,6 +243,7 @@ void UpdatePlayer2(PLAYER* player2) {
 	if (GetAsyncKeyState(VK_OEM_PERIOD) & 0x8000) {
 		if (!player2->settingBomb) {
 			if (player2->bombPlantedNum < player2->canPlantBombNum) {
+				playAudio(putBombSE, 0);
 				player2->bombPlantedNum++;
 				setBomb(player2->posX, player2->posY, player2->bombPower, player2);
 				bombsToMap();

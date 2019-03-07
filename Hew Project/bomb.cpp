@@ -55,6 +55,8 @@ void setRandomBomb(int power) {
 		y = temp / 17;
 	}
 
+	temp = rand() % (1000 - 1 + 1) + 1;
+
 	for (int i = 0; i < MAX_BOMB; i++) {
 		if (!bombs[i].isUsed && !bombs[i].hasFire) {
 			bombs[i].posX = x * 8;
@@ -65,7 +67,11 @@ void setRandomBomb(int power) {
 			bombs[i].fireTimeCnt = 0;
 			bombs[i].hasFire = false;
 			bombs[i].fromWho = NULL;
-			bombs[i].type = BOMBTYPE_ICE;
+			if(temp > 500)
+				bombs[i].type = BOMBTYPE_ICE;
+			else
+				bombs[i].type = BOMBTYPE_NORMAL;
+
 			break;
 		}
 	}
@@ -80,11 +86,16 @@ void UpdateBomb() {
 		if (bombs[i].isUsed) {
 			//爆発について
 			if (bombs[i].explodeCnt == 45 && bombs[i].hasFire != true) {
+				playAudio(explosionSE, 0);
 				explode(bombs[i]);
-				bombs[i].hasFire = true;
 				bombs[i].isUsed = false;
-				if (bombs[i].fromWho != NULL)
-					bombs[i].fromWho->bombPlantedNum--;
+
+				if (bombs[i].type == BOMBTYPE_NORMAL) {
+					bombs[i].hasFire = true;
+					if (bombs[i].fromWho != NULL)
+						bombs[i].fromWho->bombPlantedNum--;
+				}
+
 			}
 			else if (bombs[i].explodeCnt < 45 && bombs[i].hasFire != true) {
 				bombs[i].explodeCnt++;
@@ -113,26 +124,12 @@ void explode(BOMB bomb) {
 	static char mapReceiveFile[(DECODELAYER * (MAPHEIGHT / 8) * (MAPWIDTH / 8)) + 1];
 	strcpy(mapReceiveFile, getMapFileRead());	//基本マップデータをコピー
 
-	//bomb自身のマスのfire
-	for (int j = 0; j < DECODELAYER; j++) {
-		if (j == 0)
-			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '4';
-		else if (j == 1)
-			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '2';
-		else if (j == 6)
-			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '6';
-		else
-			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '0';
-	}
-
-	setMapEmpty(bomb.posX / 8, bomb.posY / 8, true);
-
-	writeMapFileRead(mapReceiveFile);
+	//writeMapFileRead(mapReceiveFile);
 
 	if (bomb.type == BOMBTYPE_NORMAL)
 		firesToMap(bomb);
 	else if (bomb.type == BOMBTYPE_ICE)
-		firesToMap(bomb);
+		iceToMap(bomb);
 }
 
 //爆弾をマップに描く
@@ -144,15 +141,29 @@ void bombsToMap() {
 	//爆弾を描く
 	for (int i = 0; i < MAX_BOMB; i++) {
 		if (bombs[i].isUsed) {
-			for (int j = 0; j < DECODELAYER; j++) {
-				if (j == 0)
-					*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '3';
-				else if (j == 1)
-					*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '2';
-				else if (j == 6)
-					*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '5';
-				else
-					*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '0';
+			if (bombs[i].type == BOMBTYPE_NORMAL) {
+				for (int j = 0; j < DECODELAYER; j++) {
+					if (j == 0)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '3';
+					else if (j == 1)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '2';
+					else if (j == 6)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '5';
+					else
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '0';
+				}
+			}
+			else if (bombs[i].type == BOMBTYPE_ICE) {
+				for (int j = 0; j < DECODELAYER; j++) {
+					if (j == 0)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '3';
+					else if (j == 1)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '2';
+					else if (j == 6)
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = 'A';
+					else
+						*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + ((bombs[i].posY / 8)*(MAPWIDTH / 8)) + (bombs[i].posX / 8)) = '0';
+				}
 			}
 		}
 	}
@@ -166,6 +177,20 @@ void firesToMap(BOMB bomb) {
 	static char mapReceiveFile[(DECODELAYER * (MAPHEIGHT / 8) * (MAPWIDTH / 8)) + 1];
 	strcpy(mapReceiveFile, getMapFileRead());	//基本マップデータをコピー
 
+	//bomb自身のマスのfire
+	for (int j = 0; j < DECODELAYER; j++) {
+		if (j == 0)
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '4';
+		else if (j == 1)
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '2';
+		else if (j == 6)
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '6';
+		else
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '0';
+	}
+	setMapEmpty(bomb.posX / 8, bomb.posY / 8, true);
+
+
 	srand(time(NULL));
 
 	//爆発範囲の火を描く
@@ -174,14 +199,14 @@ void firesToMap(BOMB bomb) {
 		//Check bomb up
 		if (!topStop) {
 			if (*(mapReceiveFile + (((bomb.posY - 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '0' || *(mapReceiveFile + (((bomb.posY - 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '2'
-				|| *(mapReceiveFile + (((bomb.posY - 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '5') {
+				|| *(mapReceiveFile + (((bomb.posY - 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '5' || *(mapReceiveFile + (((bomb.posY - 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '6') {
 				if (*(mapReceiveFile + (((bomb.posY - 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '2') {
 
 					setMapEmpty(bomb.posX / 8, (bomb.posY - 8 * i) / 8, true);
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 30) {
+					if (createItem < 10) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX, bomb.posY - 8 * i, ITEMTYPETYPE_DBBOMB);
@@ -209,14 +234,14 @@ void firesToMap(BOMB bomb) {
 		//Check bomb down
 		if (!downStop) {
 			if (*(mapReceiveFile + (((bomb.posY + 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '0' || *(mapReceiveFile + (((bomb.posY + 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '2'
-				|| *(mapReceiveFile + (((bomb.posY + 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '5') {
+				|| *(mapReceiveFile + (((bomb.posY + 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '5' || *(mapReceiveFile + (((bomb.posY + 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '6') {
 				if (*(mapReceiveFile + (((bomb.posY + 8 * i) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) == '2') {
 
 					setMapEmpty(bomb.posX / 8, (bomb.posY + 8 * i) / 8, true);
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 30) {
+					if (createItem < 10) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX, bomb.posY + 8 * i, ITEMTYPETYPE_DBBOMB);
@@ -244,14 +269,14 @@ void firesToMap(BOMB bomb) {
 		//Check bomb right
 		if (!leftStop) {
 			if (*(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX + 8 * i) / 8)) == '0' || *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX + 8 * i) / 8)) == '2'
-				|| *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX + 8 * i) / 8)) == '5') {
+				|| *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX + 8 * i) / 8)) == '5' || *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX + 8 * i) / 8)) == '6') {
 				if (*(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX + 8 * i) / 8)) == '2') {
 
 					setMapEmpty((bomb.posX + 8 * i) / 8, bomb.posY / 8, true);
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 30) {
+					if (createItem < 10) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX + 8 * i, bomb.posY, ITEMTYPETYPE_DBBOMB);
@@ -279,14 +304,14 @@ void firesToMap(BOMB bomb) {
 		//Check bomb left
 		if (!rightStop) {
 			if (*(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX - 8 * i) / 8)) == '0' || *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX - 8 * i) / 8)) == '2'
-				|| *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX - 8 * i) / 8)) == '5') {
+				|| *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX - 8 * i) / 8)) == '5' || *(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX - 8 * i) / 8)) == '6') {
 				if (*(mapReceiveFile + ((bomb.posY / 8)*(MAPWIDTH / 8)) + ((bomb.posX - 8 * i) / 8)) == '2') {
 
 					setMapEmpty((bomb.posX - 8 * i) / 8, bomb.posY / 8, true);
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 30) {
+					if (createItem < 10) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX - 8 * i, bomb.posY, ITEMTYPETYPE_DBBOMB);
@@ -318,7 +343,22 @@ void firesToMap(BOMB bomb) {
 
 //爆弾の氷をマップに描く
 void iceToMap(BOMB bomb) {
+	static char mapReceiveFile[(DECODELAYER * (MAPHEIGHT / 8) * (MAPWIDTH / 8)) + 1];
+	strcpy(mapReceiveFile, getMapFileRead());	//基本マップデータをコピー
 
+	//bomb自身のマスのice
+	for (int j = 0; j < DECODELAYER; j++) {
+		if (j == 0)
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '6';
+		else if (j == 1)
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '2';
+		else if (j == 6)
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '9';
+		else
+			*(mapReceiveFile + (j*(MAPHEIGHT / 8)*(MAPWIDTH / 8)) + (((bomb.posY) / 8)*(MAPWIDTH / 8)) + (bomb.posX / 8)) = '0';
+	}
+
+	writeMapFileRead(mapReceiveFile);
 }
 
 //爆弾の火をマップから消す

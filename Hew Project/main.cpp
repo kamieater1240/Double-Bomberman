@@ -5,6 +5,7 @@
 
 HANDLE hWindow = GetStdHandle(STD_OUTPUT_HANDLE);
 int g_nCountFPS;				// FPSカウンタ
+int titleMusic, themeMusic, selectSE, takeItemSE, putBombSE, footstepSE, gameoverSE, explosionSE;
 
 int main() {
 
@@ -25,6 +26,7 @@ int main() {
 	Initiation();
 	standbyScreen();
 
+	playAudio(themeMusic, 1);
 	do
 	{
 		dwCurrentTime = timeGetTime();
@@ -51,10 +53,15 @@ int main() {
 		}
 	} while (player1->isAlive && player2->isAlive);
 
+	stopAudio(themeMusic);
+
 	// 分解能を戻す
 	timeEndPeriod(1);
 
 	system("cls");
+
+	playAudio(gameoverSE, 1);
+
 	if (player1->isAlive)
 		gameOverScreen(1);
 	else if (player2->isAlive)
@@ -89,6 +96,18 @@ void Initiation() {
 	initBomb();
 	initMapEmpty();
 	initItem();
+	InitMusic();
+}
+
+void InitMusic() {
+	titleMusic = openAudio("Title.mp3");
+	themeMusic = openAudio("Theme.mp3");
+	selectSE = openAudio("Select.mp3");
+	takeItemSE = openAudio("takeItem.mp3");
+	putBombSE = openAudio("putBomb.mp3");
+	footstepSE = openAudio("Footstep.mp3");
+	gameoverSE = openAudio("gameover.mp3");
+	explosionSE = openAudio("explosion.mp3");
 }
 
 //各ステータスをアップデートする

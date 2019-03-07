@@ -17,6 +17,7 @@
 #include "color.h"
 #include "item.h"
 #include "startandend.h"
+#include "music.h"
 using namespace std;
 
 #define INDEXSIZE		256
@@ -45,11 +46,14 @@ enum State {
 	RESULT
 };
 
+extern int titleMusic, themeMusic, selectSE, takeItemSE, putBombSE, footstepSE, gameoverSE, explosionSE;
+
 #ifdef _DEBUG
 void DispDebug(void);
 #endif // _DEBUG
 
 void Initiation();
+void InitMusic();
 void Update();
 void Draw();
 

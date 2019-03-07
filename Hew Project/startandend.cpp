@@ -5,13 +5,12 @@
 
 void standbyScreen() {
 
+	playAudio(titleMusic, 1);
+
 	Image title1, title2;
 
 	loadImage("BomberMan1", title1);
 	loadImage("BomberMan2", title2);
-
-	/*loadImage("test", title1);
-	loadImage("test", title2);*/
 
 	rewind(stdin);
 
@@ -21,7 +20,12 @@ void standbyScreen() {
 		Sleep(600);
 		drawImage(title2);
 		Sleep(600);
+
+		if (kbhit()) {
+			playAudio(selectSE, 0);
+		}
 	}
+	stopAudio(titleMusic);
 }
 
 
