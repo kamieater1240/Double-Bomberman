@@ -120,14 +120,16 @@ void UpdatePlayer1(PLAYER* player1) {
 	if (GetAsyncKeyState(VK_TAB) & 0x8000) {
 		if (!player1->settingBomb) {
 			if (player1->bombPlantedNum < player1->canPlantBombNum) {
-				playAudio(putBombSE, 0);
-				player1->bombPlantedNum++;
-				setBomb(player1->posX, player1->posY, player1->bombPower, player1);
-				bombsToMap();
-				player1->settingBomb = true;
-				setMapEmpty(player1->posX / 8, player1->posY / 8, false);
-				setRandomBomb(player1->bombPower);
-				bombsToMap();
+				if (checkMapEmpty(player1->posX / 8, player1->posY / 8)) {
+					playAudio(putBombSE, 0);
+					player1->bombPlantedNum++;
+					setBomb(player1->posX, player1->posY, player1->bombPower, player1);
+					bombsToMap();
+					player1->settingBomb = true;
+					setMapEmpty(player1->posX / 8, player1->posY / 8, false);
+					setRandomBomb(player1->bombPower);
+					bombsToMap();
+				}
 			}
 		}
 	}
@@ -243,14 +245,16 @@ void UpdatePlayer2(PLAYER* player2) {
 	if (GetAsyncKeyState(VK_OEM_PERIOD) & 0x8000) {
 		if (!player2->settingBomb) {
 			if (player2->bombPlantedNum < player2->canPlantBombNum) {
-				playAudio(putBombSE, 0);
-				player2->bombPlantedNum++;
-				setBomb(player2->posX, player2->posY, player2->bombPower, player2);
-				bombsToMap();
-				player2->settingBomb = true;
-				setMapEmpty(player2->posX / 8, player2->posY / 8, false);
-				setRandomBomb(player2->bombPower);
-				bombsToMap();
+				if (checkMapEmpty(player2->posX / 8, player2->posY / 8)) {
+					playAudio(putBombSE, 0);
+					player2->bombPlantedNum++;
+					setBomb(player2->posX, player2->posY, player2->bombPower, player2);
+					bombsToMap();
+					player2->settingBomb = true;
+					setMapEmpty(player2->posX / 8, player2->posY / 8, false);
+					setRandomBomb(player2->bombPower);
+					bombsToMap();
+				}
 			}
 		}
 	}

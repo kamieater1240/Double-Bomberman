@@ -67,7 +67,7 @@ void setRandomBomb(int power) {
 			bombs[i].fireTimeCnt = 0;
 			bombs[i].hasFire = false;
 			bombs[i].fromWho = NULL;
-			if(temp > 500)
+			if(temp <= 350)
 				bombs[i].type = BOMBTYPE_ICE;
 			else
 				bombs[i].type = BOMBTYPE_NORMAL;
@@ -85,7 +85,7 @@ void UpdateBomb() {
 	for (int i = 0; i < MAX_BOMB; i++) {
 		if (bombs[i].isUsed) {
 			//”š”­‚É‚Â‚¢‚Ä
-			if (bombs[i].explodeCnt == 45 && bombs[i].hasFire != true) {
+			if (bombs[i].explodeCnt == 30 && bombs[i].hasFire != true) {
 				playAudio(explosionSE, 0);
 				explode(bombs[i]);
 				bombs[i].isUsed = false;
@@ -97,7 +97,7 @@ void UpdateBomb() {
 				}
 
 			}
-			else if (bombs[i].explodeCnt < 45 && bombs[i].hasFire != true) {
+			else if (bombs[i].explodeCnt < 30 && bombs[i].hasFire != true) {
 				bombs[i].explodeCnt++;
 			}
 
@@ -206,7 +206,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 10) {
+					if (createItem < 20) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX, bomb.posY - 8 * i, ITEMTYPETYPE_DBBOMB);
@@ -241,7 +241,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 10) {
+					if (createItem < 20) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX, bomb.posY + 8 * i, ITEMTYPETYPE_DBBOMB);
@@ -276,7 +276,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 10) {
+					if (createItem < 20) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX + 8 * i, bomb.posY, ITEMTYPETYPE_DBBOMB);
@@ -311,7 +311,7 @@ void firesToMap(BOMB bomb) {
 
 					int createItem = rand() % (100 - 1 + 1) + 1;
 					//Create item
-					if (createItem < 10) {
+					if (createItem < 20) {
 						int whichKind = rand() % (100 - 1 + 1) + 1;
 						if (whichKind > 50)
 							setItem(bomb.posX - 8 * i, bomb.posY, ITEMTYPETYPE_DBBOMB);

@@ -3,19 +3,7 @@
 #include "image.h"
 
 void loadImage(const string & filename, Image& image) {
-	/*FILE *file;
-	char path[_MAX_PATH] = "Resources/";
-	char ext[_MAX_EXT] = ".bmp";
-	BITMAPFILEHEADER bmpFile;
-	BITMAPINFOHEADER bmpInfo;
-	int colorSize, pixelNum;
-	RGBTRIPLE *bmpColor;
-
-	strcat_s(path, name);
-	strcat_s(path, ext);
-	fopen_s(&file, path, "rb");
-	fread((char*)&bmpFile, sizeof(BITMAPFILEHEADER), 1, file);
-	fread((char*)&bmpInfo, sizeof(BITMAPINFOHEADER), 1, file);*/
+	
 	// file path
 	string path{ "Resources\\" };
 	path = path + filename + ".bmp";
@@ -40,9 +28,6 @@ void loadImage(const string & filename, Image& image) {
 	fs.read(reinterpret_cast<char*>(&bmpInfo), sizeof BITMAPINFOHEADER);
 
 	int pixelNum = bmpInfo.biWidth * bmpInfo.biHeight;
-	//colorSize = sizeof(RGBTRIPLE) * bmpInfo.biWidth * bmpInfo.biHeight;
-	/*bmpColor = (RGBTRIPLE*)malloc(colorSize);
-	fread((char*)bmpColor, colorSize, 1, file);*/
 	RGBTRIPLE *bmpColor = new RGBTRIPLE[pixelNum];
 	fs.read(reinterpret_cast<char*>(bmpColor), sizeof(RGBTRIPLE) * pixelNum);
 
@@ -58,15 +43,12 @@ void loadImage(const string & filename, Image& image) {
 		getColor(*(bmpColor + i), *(image.color + i));
 	}
 
-	//free(bmpColor);
-	//fclose(file);
 }
 
 void drawImage(Image image) {
 
 	for (int i = 0; i < image.size.X; i++) {
 		for (int j = 0; j < image.size.Y; j++) {
-			//writePixelToBuffer(j, i, colorDecoder(image.color[i * image.size.X + j].Char.AsciiChar), SPACE);
 			writeCharInfoToBuffer(j, i, *(image.color + (image.size.X - 1 - i) * image.size.Y + j));
 		}
 	}

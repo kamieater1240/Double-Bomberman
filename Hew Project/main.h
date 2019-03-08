@@ -46,7 +46,7 @@ enum State {
 	RESULT
 };
 
-extern int titleMusic, themeMusic, selectSE, takeItemSE, putBombSE, footstepSE, gameoverSE, explosionSE;
+extern int titleMusic, themeMusic, selectSE, takeItemSE, putBombSE, footstepSE, gameoverSE, explosionSE, endMusic;
 
 #ifdef _DEBUG
 void DispDebug(void);

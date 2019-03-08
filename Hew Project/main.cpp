@@ -5,7 +5,7 @@
 
 HANDLE hWindow = GetStdHandle(STD_OUTPUT_HANDLE);
 int g_nCountFPS;				// FPSカウンタ
-int titleMusic, themeMusic, selectSE, takeItemSE, putBombSE, footstepSE, gameoverSE, explosionSE;
+int titleMusic, themeMusic, selectSE, takeItemSE, putBombSE, footstepSE, gameoverSE, explosionSE, endMusic;
 
 int main() {
 
@@ -69,6 +69,13 @@ int main() {
 
 	rewind(stdin);
 	getchar();
+	stopAudio(gameoverSE);
+
+	playAudio(endMusic, 1);
+	thanksForPlaying();
+
+	rewind(stdin);
+	getchar();
 	return 0;
 }
 
@@ -108,6 +115,7 @@ void InitMusic() {
 	footstepSE = openAudio("Footstep.mp3");
 	gameoverSE = openAudio("gameover.mp3");
 	explosionSE = openAudio("explosion.mp3");
+	endMusic = openAudio("End.mp3");
 }
 
 //各ステータスをアップデートする

@@ -3,3 +3,4 @@
 
 void standbyScreen();
 void gameOverScreen(int winner);
+void thanksForPlaying();

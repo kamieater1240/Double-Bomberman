@@ -15,16 +15,20 @@ void standbyScreen() {
 	rewind(stdin);
 
 	while (!kbhit()) {
-		
+
 		drawImage(title1);
 		Sleep(600);
 		drawImage(title2);
 		Sleep(600);
-
-		if (kbhit()) {
-			playAudio(selectSE, 0);
-		}
 	}
+	playAudio(selectSE, 0);
+	for (int i = 0; i < 10; i++) {
+		drawImage(title1);
+		Sleep(100);
+		drawImage(title2);
+		Sleep(100);
+	}
+
 	stopAudio(titleMusic);
 }
 
@@ -67,4 +71,11 @@ void gameOverScreen(int winner) {
 	}
 
 	OutputBuffer();
+}
+
+void thanksForPlaying() {
+	Image endtitle;
+
+	loadImage("ThanksForPlaying", endtitle);
+	drawImage(endtitle);
 }
