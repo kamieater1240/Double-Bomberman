@@ -6,8 +6,8 @@ void loadImage(const string & filename, Image& image) {
 	
 	// file path
 	string path{ "Resources\\" };
-	path = path + filename + ".bmp";
-	//open the bmp file
+	path = path + filename + ".sprite";
+	//open the sprite file
 	fstream fs(path, ios::binary | ios::in);
 	//if fail return -1
 	if (!fs)
@@ -15,25 +15,25 @@ void loadImage(const string & filename, Image& image) {
 		return;
 	}
 	//file header
-	BITMAPFILEHEADER bmpFile;
-	BITMAPINFOHEADER bmpInfo;
+	BITMAPFILEHEADER spriteFile;
+	BITMAPINFOHEADER spriteInfo;
 	//read file header
-	fs.read(reinterpret_cast<char*>(&bmpFile), sizeof BITMAPFILEHEADER);
-	//if not bmp file return -1
-	if (bmpFile.bfType != 'MB')
+	fs.read(reinterpret_cast<char*>(&spriteFile), sizeof BITMAPFILEHEADER);
+	//if not sprite file return -1
+	if (spriteFile.bfType != 'MB')
 	{
 		return;
 	}
 	//red bmp info header
-	fs.read(reinterpret_cast<char*>(&bmpInfo), sizeof BITMAPINFOHEADER);
+	fs.read(reinterpret_cast<char*>(&spriteInfo), sizeof BITMAPINFOHEADER);
 
-	int pixelNum = bmpInfo.biWidth * bmpInfo.biHeight;
+	int pixelNum = spriteInfo.biWidth * spriteInfo.biHeight;
 	RGBTRIPLE *bmpColor = new RGBTRIPLE[pixelNum];
 	fs.read(reinterpret_cast<char*>(bmpColor), sizeof(RGBTRIPLE) * pixelNum);
 
 	//save bmp size
-	image.size.X = bmpInfo.biHeight;
-	image.size.Y = bmpInfo.biWidth;
+	image.size.X = spriteInfo.biHeight;
+	image.size.Y = spriteInfo.biWidth;
 
 	image.color = new CHAR_INFO[pixelNum];
 

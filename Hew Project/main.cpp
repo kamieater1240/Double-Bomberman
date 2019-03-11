@@ -37,7 +37,7 @@ int main() {
 			nCountFrame = 0;
 		}
 
-		if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
+		if ((dwCurrentTime - dwExecLastTime) >= (1000 / 30))
 		{
 			dwExecLastTime = dwCurrentTime;
 
